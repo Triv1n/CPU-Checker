@@ -1,11 +1,7 @@
-//#include - готовый инструмент из библиотеки Линукса
 
-#include <stdio.h> //Инструмент ввода-вывода (printf, fopen, fgets)
-
-#include <stdlib.h> //Базовые функции системы такие как управление памятью, завершение программы и exit
-
-#include <string.h> //Инструмент работы со строками
-		    
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <stdbool.h>
 
 struct CPUInfo {
@@ -24,11 +20,11 @@ int parse_cpu_info(struct CPUInfo *info) {
 	char buffer[256];
 
 	if(file == NULL) {
-		perror("Не удалось прочитать");
+		perror("Error!");
 		return 1;
 	}
-	while(fgets(buffer, sizeof(buffer), file) /* читает одну строчку из открытого файла и следит что бы не превысила 256 байт */ != NULL) {
-		if(strncmp(buffer, "model name", 10) == 0 /* Берет первые 10 символов из buffer сравнивает с буквосочитанием, если совпало возвращается 0 */ && IsModelNameFound == false) {
+	while(fgets(buffer, sizeof(buffer), file) != NULL) {
+		if(strncmp(buffer, "model name", 10) == 0 && IsModelNameFound == false) {
 			IsModelNameFound = true;
 			strncpy(info->modelName, buffer, sizeof(info->modelName));
 			printf("%s", info->modelName);
@@ -43,7 +39,7 @@ int parse_cpu_info(struct CPUInfo *info) {
 		}
 	}
 
-	printf("Кол-во ядер процессора: %d\n", info->ProcCore);
+	printf("Number of processor cores: %d\n", info->ProcCore);
 	fclose(file);
 	return 0;
 }
